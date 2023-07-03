@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tailwind CSS simple shopping cart ui</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link
+      href="/dist/style.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- product -->
+    <div>
+        <i class="fa fa-shopping-cart">
+            <span>1</span>
+        </i>
+    </div>
+   
+    <div class="container">
+        <div class="py-10 grid grid-cols-2 md:grid-cols-4 gap-6" id="productList">
+                        
+        </div>
+        <button onClick="continueCart()" class="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Continue to checkout</button>              
+    </div>
+    <script src="./components/Products.js">
+
+     </script>   
+    <script>
+        var ss=""
+        for(product of products){
+            ss =ss+`<div class="bg-white shadow rounded overflow-hidden group">
+                <div class="relative">
+                    <img src="${product.imageUrl}" alt="product 1" class="w-full">
+                </div>
+                <div class="pt-4 pb-3 px-4">
+                    <a href="#">
+                        <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">${product.name}</h4>
+                    </a>
+                    <div class="flex items-baseline mb-1 space-x-2">
+                        <p class="text-xl text-primary font-semibold">${'$'+product.price}</p>                      
+                    </div>
+                </div>
+                <button onClick="addToCart(${product.id})" class="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add to Cart</button>              
+            </div>`;
+            document.getElementById("productList").innerHTML=ss;
+        }
+        var addToCartArray=[];
+        var pid="";
+        function addToCart(event){
+           // alert(event);
+            var item = products.find(item => item.id === event);
+            addToCartArray.push(item);
+            // print
+            pid=pid!=""?pid+","+event:event;
+        }
+
+        function continueCart(){
+            console.log(pid)
+            window.location=`addToChart.html?addToCartList=${pid}`;
+        }
+    </script>
+  </body>
+</html>
