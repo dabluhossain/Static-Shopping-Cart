@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link
+      href="/dist/style.css"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+</head>
+<body>
+    <h1>Add to cart </h1>
+    <div class="h-screen bg-gray-100 pt-20">
+        <h1 class="mb-10 text-center text-2xl font-bold">Cart Items</h1>
+        <div class="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+          <div class="rounded-lg md:w-2/3" id="cartlist">
+           
+          </div>
+          <!-- Sub total -->
+          <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+            <div class="mb-2 flex justify-between">
+              <p class="text-gray-700">Subtotal</p>
+              <p class="text-gray-700" id="subTotal">$129.99</p>
+            </div>
+            <div class="flex justify-between">
+              <p class="text-gray-700">Discount(10%)</p>
+              <p class="text-gray-700" id="discountAmount">$4.99</p>
+            </div>
+            <hr class="my-4" />
+            <div class="flex justify-between">
+              <p class="text-lg font-bold">Total</p>
+              <div class="">
+                <p class="mb-1 text-lg font-bold" id="totalAmount">$134.98 USD</p>
+                <!-- <p class="text-sm text-gray-700">including VAT</p> -->
+              </div>
+            </div>
+            <button class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+          </div>
+        </div>
+      </div>
+    <script src="./components/Products.js"></script>
+    <script>
+        var ll="";
+        let subTotal=0;
+        let discountAmount=0;
+        let totalAmount=0;
+        const queryString  = new URLSearchParams(window.location.search);
+                const ids = queryString.get('addToCartList').split(',');
+                for (pid of ids){
+                    var item = products.find(item => item.id == pid);
+                    subTotal = subTotal+item.price;
+                     ll = ll+ ` <div id="id_${pid}" class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
+              <img src="${item.imageUrl}" alt="product-image" class="w-full rounded-lg sm:w-40" />
+              <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+                <div class="mt-5 sm:mt-0">
+                  <h2 class="text-lg font-bold text-gray-900">${item.name}</h2>
+                  <p class="mt-1 text-xs text-gray-700">${item.description}</p>
+                </div>
+                <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+                  <div class="flex items-center border-gray-100">
+                    <span class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
+                    <input class="h-8 w-16 border bg-white text-center text-xs outline-none" type="number" value="1" min="1" />
+                    <span class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+                  </div>
+                  <div class="flex items-center space-x-4">
+                    <p class="text-sm">${'$'+item.price}</p>
+                    <button onClick="removeItem(${item.id})" class="cursor-pointer rounded-r bg-red-100 py-1 px-3 duration-100 hover:bg-red-300 hover:text-red-50">Remove</button>
+                  </div>
+                </div>
+              </div>
+            </div>`    
+                   // console.log(pid)
+                }
+          
+
+            function removeItem(event){
+                var item = products.find(item => item.id == event);
+                subTotal = subTotal-item.price;
+                console.log(event+'=subTotal='+subTotal);
+                document.getElementById("id_"+event).remove();
+                updateSubtotal();
+            }
+            function updateSubtotal (){
+                discountAmount= Math.floor((subTotal*10)/100);
+                totalAmount = subTotal-discountAmount;
+                document.getElementById('subTotal').innerText="$"+subTotal;
+                document.getElementById('discountAmount').innerText = "$"+discountAmount;
+                document.getElementById('totalAmount').innerText="$"+totalAmount;
+            }
+            console.log('subTotal='+ subTotal);
+                discountAmount= Math.floor((subTotal*10)/100);
+                totalAmount = subTotal-discountAmount;
+            document.getElementById('cartlist').innerHTML=ll;
+            document.getElementById('subTotal').innerText="$"+subTotal;
+            document.getElementById('discountAmount').innerText = "$"+discountAmount;
+            document.getElementById('totalAmount').innerText="$"+totalAmount;
+
+    </script>
+</body>
+</html>
